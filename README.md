@@ -52,12 +52,12 @@ soon.
 
 ![Unit test result](https://api.travis-ci.org/badele/JobCatcher.png)
 
-- Apec.fr (France)
-- Cadreonline (France)
+- Apec.fr (France) --> TO update
+- Cadreonline (France) --> OK (1st version)
 - Eures (Europe)
-- PoleEmploi (France)
+- PoleEmploi (France) --> OK (1st version)
 - Progressive Recruitment (France)
-- RegionsJob
+- RegionsJob --> OK (1st version)
  - CentreJob (France)
  - NordJob (France)
  - PacaJob (France)
@@ -69,6 +69,7 @@ soon.
 
 ### TODO
 
+- Sept lieues
 - Lolix.org (France)
 - Linux.com (Int.)
 - L'eXpress-Board (France)
@@ -80,7 +81,7 @@ soon.
 
     # Install a packages
     apt-get update
-    apt-get install sqlite3 python-pip git 
+    apt-get install sqlite3 python-pip git
     pip install virtualenv virtualenvwrapper
 
 
@@ -91,7 +92,7 @@ soon.
     source /usr/local/bin/virtualenvwrapper.sh
     EOF
     source ~/.bashrc
-    
+
     # Prepare jobcatcher environment
     mkvirtualenv --no-site-packages -p /usr/bin/python2.7 jobcatcher
     add2virtualenv /opt/JobCatcher
