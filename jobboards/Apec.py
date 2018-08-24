@@ -25,6 +25,8 @@ import utilities
 from jc.data import Offer
 from jc.jobboard import JobBoard
 
+from selenium import webdriver
+
 class JBApec(JobBoard):
 
     def __init__(self, configs=[]):
@@ -53,11 +55,9 @@ class JBApec(JobBoard):
                     flags=re.MULTILINE | re.DOTALL
                 )
                 for r in res:
-                    # Check if URL is valid
-                    m = re.search(r'<link>(http://cadres\.apec\.fr/offres-emploi-cadres/.*?)</link>', r.group(1))
+                    m = re.search(r'<link>(https://cadres\.apec\.fr/home/.*?)</link>', r.group(1))
                     if m:
                         urls.append([feedid, m.group(1)])
-
         return urls
 
     def _extractItem(self, itemname, soup):
@@ -105,11 +105,17 @@ class JBApec(JobBoard):
 
         return offerid
 
+    def _get_title(self, soup):
+        h1 = soup.body.find('h1', attrs={'class': 'text-uppercase ng-binding'})
+        if not h1:
+            return "Title not found"
+        return utilities.htmltotext(h1.text).strip()
+
     def analyzePage(self, page):
         """Analyze page and extract datas"""
 
-        if not self.requireAnalyse(page):
-            return ""
+        #if not self.requireAnalyse(page):
+        #    return ""
 
         self.datas['offerid'] = self.extractOfferId(page)
         soup = BeautifulSoup(page.content, fromEncoding=self.encoding['page'])
@@ -121,12 +127,15 @@ class JBApec(JobBoard):
                 self.disableOffer(self.datas['offerid'])
                 return ""
 
-        # Title
-        h1 = soup.body.find('h1', attrs={'class': 'detailOffre'})
-        if not item:
-            return "No title found"
+        driver = webdriver.PhantomJS()
+        print("getting url:", page.url)
+        driver.get(page.url)
+        p_element = driver.find_element_by_id(id_='do.offre.intitule')
+        print("p_element:", p_element)
 
-        self.datas['title'] = utilities.htmltotext(h1.text).replace('Détail de l\'offre : ', '').strip()
+        # Title
+        self.datas['title'] = self._get_title(soup)
+        print("self.datas['title']:", self.datas['title'])
 
         # Refs
         table = item.find('table', attrs={'class': 'noFieldsTable'})
@@ -197,7 +206,7 @@ class JBApec(JobBoard):
         conn.text_factory = str
         cursor = conn.cursor()
         try:
-            cursor.execute("INSERT INTO jb_%s VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" % 
+            cursor.execute("INSERT INTO jb_%s VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" %
                            self.name, (
                                self.datas['offerid'],
                                self.datas['lastupdate'],
