@@ -47,15 +47,16 @@ class JBRegionJob(JobBoard):
 
                 # Search result
                 res = re.finditer(
-                    r'<item>(.*?)</item>',
+                    r'class="annonce (.*?)</section>',
                     html,
                     flags=re.MULTILINE | re.DOTALL
                 )
+
                 for r in res:
-                    # Check if URL is valid
-                    m = re.search(r'<link>(.*?numoffre=.*?)</link>', r.group(1))
+                    m = re.search(r'<a href="/emplois/(.*?)" ', r.group(1))
                     if m:
-                        urls.append([feedid, m.group(1)])
+                        url_str = "https://www.ouestjob.com/emplois/" + m.group(1)
+                        urls.append([feedid, url_str])
 
         return urls
 
@@ -87,7 +88,7 @@ class JBRegionJob(JobBoard):
     def extractOfferId(self, page):
         offerid = None
         m = re.search(
-            ur'.*?numoffre=([0-9]+)&amp;.*',
+            ur'([0-9]{7,})',
             page.url,
             flags=re.MULTILINE | re.DOTALL
         )
@@ -96,11 +97,19 @@ class JBRegionJob(JobBoard):
 
         return offerid
 
+    def _get_title(self, soup):
+        # """Get the job title"""
+        title = "N/A"
+        m = re.search('<strong>(.*?)<\/strong>', str(soup))
+        if m:
+            title = m.group(1)
+        return "N/A"
+
     def analyzePage(self, page):
         """Analyze page and extract datas"""
 
-        if not self.requireAnalyse(page):
-            return ""
+        #if not self.requireAnalyse(page):
+        #    return ""
 
         self.datas['offerid'] = self.extractOfferId(page)
         soup = BeautifulSoup(page.content, fromEncoding=self.encoding['page'])
@@ -116,7 +125,12 @@ class JBRegionJob(JobBoard):
             return "No title found"
 
         # Title & Url
-        self.datas['title'] = utilities.htmltotext(h1.text).strip()
+        tab_portrait_item = soup.body.find('div', attrs={'class': 'col size8of12 show_tabportrait'})
+        if not tab_portrait_item:
+            return "No tab_portrait_item found"
+
+        # title
+        self.datas['title'] = self._get_title(tab_portrait_item)
         self.datas['url'] = page.url
 
         # Date & Ref
