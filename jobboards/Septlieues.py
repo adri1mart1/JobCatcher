@@ -108,24 +108,13 @@ class JBSeptlieues(JobBoard):
     def _get_data_contract(self, soup):
         """Get the contract type in text blop"""
         res = None
-        desc_aside_item = soup.find('div', attrs={'class': 'description-aside col-sm-4 col-md-5'})
-        if desc_aside_item:
-            pattern_cdi = r'ind\xe9termin\xe9e'
-            pattern_cdd = r'd\xe9termin\xe9e'
-            pattern_interim = r'int\xe9rimaire'
+        head_details = soup.find('span', attrs={'id': 'head_details_resume'})
+        if head_details:
+            pattern_cdi = r'CDI'
             html = unicode.join(u'\n', map(unicode, soup))
-
             m = re.search(pattern_cdi, html, flags=re.MULTILINE | re.DOTALL)
             if m:
                 return "CDI"
-
-            m = re.search(pattern_cdd, html, flags=re.MULTILINE | re.DOTALL)
-            if m:
-                return "CDD"
-
-            m = re.search(pattern_interim, html, flags=re.MULTILINE | re.DOTALL)
-            if m:
-                return "Interim"
         return "Unknown"
 
     def _get_title(self, soup):
@@ -133,16 +122,20 @@ class JBSeptlieues(JobBoard):
         div = soup.find('div', attrs={'class': 'job-title'})
         if not div:
             return "Title not found"
-        print("div:", div.text)
-        return "N/A"
+        title = div.find('h2')
+        if not title:
+            return "Title not found"
+        return utilities.htmltotext(title.text).rstrip()
 
     def _get_published_date(self, soup):
         """Getting the published date"""
-        date_item = soup.find('p', attrs={'class': 't5 title-complementary'})
-        if date_item:
-            m = re.search('[0-9]{1,2} \D* [0-9]{4}', str(date_item.text))
-            if m:
-                return int(time.mktime(dateparser.parse(m.group(0)).date().timetuple()))
+        pub_date = soup.find('span', attrs={'id': 'head_details_date'})
+        # expected string --> <span id="head_details_date">Publiée le 27/09/2018</span>
+        regex='<span id="head_details_date">Publiée le (.*?)</span>'
+        res = None
+        m = re.search(regex, str(pub_date), flags=re.MULTILINE | re.DOTALL)
+        if m:
+            return int(time.mktime(dateparser.parse(m.group(1)).date().timetuple()))
         return int(time.time())
 
     def _get_company(self, soup):
@@ -169,6 +162,10 @@ class JBSeptlieues(JobBoard):
                 return m.group(1)
         return "N/A"
 
+    def _get_reference(self, url):
+        print("url:", url)
+        return "N/A"
+
     def analyzePage(self, page):
         """Analyze page and extract datas"""
 
@@ -183,58 +180,49 @@ class JBSeptlieues(JobBoard):
             self.disableOffer(self.datas['offerid'])
             return "Offer not available"
 
-
-        # searching for modal-details modal-details-offre
-        # item = soup.body.find('div', attrs={'class': 'modal-details modal-details-offre'})
-        # if not item:
-        #     self.disableOffer(self.datas['offerid'])
-        #     return "No modal-details-offre content found"
-
-
         # Title
         self.datas['title'] = self._get_title(soup)
 
         # Url
         self.datas['url'] = page.url
 
-        # # Ref
-        # # self.datas['ref'] = self._regexExtract(u'Numéro de l\'offre', li)
-        # self.datas['ref'] = "N/A"
-
-        # # Last update
-        # li = item.find('li', attrs={'class': 'primary'})
-        # self.datas['lastupdate'] = page.lastupdate
+        # Ref
+        self.datas['ref'] = self._get_reference(page.url)
 
         # # Feed id
-        # self.datas['feedid'] = page.feedid
+        self.datas['feedid'] = page.feedid
 
-        # # Date of publication
-        # self.datas['date_pub'] = self._get_published_date(item)
+        # Date of publication
+        self.datas['date_pub'] = self._get_published_date(soup)
+        # Last update
+        self.datas['lastupdate'] = self.datas['date_pub']
 
-        # # Add in db date
-        # self.datas['date_add'] = int(time.time())
+        # Add in db date
+        self.datas['date_add'] = int(time.time())
 
-        # # Job informations
-        # self.datas['contract'] = self._get_data_contract(item)
+        # Job informations
+        self.datas['contract'] = self._get_data_contract(soup)
 
-        # # Salary
-        # self.datas['salary'] = "N/A"
-        # # self.datas['salary'] = self._regexExtract(
-        # #     u'Salaire indicatif', item
-        # # )
-        # self.filterSalaries(self.datas)
+        # Salary
+        self.datas['salary'] = "N/A"
+        # self.datas['salary'] = self._regexExtract(
+        #     u'Salaire indicatif', item
+        # )
+        self.filterSalaries(self.datas)
 
-        # # Location
+        # Location
+        self.datas['department'] = "N/A"
         # self.datas['department'] = self._get_department_num(item)
+        self.datas['location'] = "N/A"
         # self.datas['location'] = self._get_location(item)
 
-        # # Company
-        # self.datas['company'] = self._get_company(item)
+        # Company
+        self.datas['company'] = "Not found"
 
         # # Insert to jobboard table
-        # self.datas['state'] = 'ACTIVE'
+        self.datas['state'] = 'ACTIVE'
 
-        # self.insertToJBTable()
+        self.insertToJBTable()
 
         return None
 
