@@ -1,6 +1,3 @@
-![Unit test result](https://api.travis-ci.org/badele/JobCatcher.png)
-
-
 # JobCatcher
 
 ![JobCatcher Screenshot](https://raw.github.com/yoannsculo/JobCatcher/master/screenshots/jobcatcher.png)
@@ -19,6 +16,11 @@ this is compatible with dependencies I've choosen.
 
 ## Work in Progress
 
+This project is a fork from https://github.com/yoannsculo/JobCatcher
+Take this repo as a training for webscrapping and a try to reach something
+usefull for people who think diversity in jobboard websites doesn't ease
+to find opportunities.
+
 The project is fully in development and many features need to be implemented.
 It is developed in Python. This is my first time I use Python on a non-basic
 project. So I guess my code is not so pythonic ... yet. Feel free to help me or
@@ -26,7 +28,7 @@ show me mistakes I could have made or improvements I could do.
 
 ## Dependencies
 
-	python-html2text, python-requests, python-beautifulsoup
+	python-html2text, python-requests, python-beautifulsoup, chromedriver
 
 ## Usage (mainly development options for now)
 
@@ -50,14 +52,15 @@ soon.
 
 # List of supported Job Boards
 
-![Unit test result](https://api.travis-ci.org/badele/JobCatcher.png)
+### Partially working
 
-- Apec.fr (France) --> TO update
-- Cadreonline (France) --> OK (1st version)
-- Eures (Europe)
-- PoleEmploi (France) --> OK (1st version)
-- Progressive Recruitment (France)
-- RegionsJob --> OK (1st version)
+In this part, some of the websites below are not full working, some information
+are missing when webscrapping.
+
+- Apec.fr (France)
+- Cadreonline (France)
+- PoleEmploi (France)
+- RegionsJob
  - CentreJob (France)
  - NordJob (France)
  - PacaJob (France)
@@ -66,10 +69,13 @@ soon.
  - OuestJob (France)
  - SudOuestJob (France)
  - ParisJob (France)
+- Sept lieues (France)
 
 ### TODO
 
-- Sept lieues
+- Monster
+- Eures (Europe)
+- Progressive Recruitment (France)
 - Lolix.org (France)
 - Linux.com (Int.)
 - L'eXpress-Board (France)
@@ -118,3 +124,4 @@ Help us to add new job boards to JobCatcher ! :)
 - Yoann Sculo - [www.yoannsculo.fr](http://www.yoannsculo.fr)
 - Bruno Adelé - [bruno.adele.im](http://bruno.adele.im)
 - Yankel Scialom - [github](https://github.com/yscialom)
+- Adrien Martin [martegy.net](martegy.net)
