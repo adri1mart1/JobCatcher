@@ -5,6 +5,7 @@ __authors__ = [
     'Bruno Adelé <bruno@adele.im>',
     'Yoann Sculo <yoann.sculo@gmail.com>',
     'Yankel Scialom (YSC) <yankel.scialom@mail.com>',
+    'Adrien Martin <adrien.martin@martegy.net>',
 ]
 __license__ = 'GPLv2'
 __version__ = '0.1'
@@ -13,62 +14,51 @@ __version__ = '0.1'
 
 configs = {
     # 'PoleEmploi': {
+    #     # How to add a custom feed?
+    #     # STEP 1: Go to https://www.pole-emploi.fr/accueil/
+    #     # STEP 2: Fill a keyword + Location
+    #     # STEP 3: Save link as per example below
     #     'feeds': [
-    #         # {
-    #         #     'url': 'http://candidat.pole-emploi.fr/candidat/rechercheoffres/avancee.recherche',
-    #         #     'datas': {
-    #         #         'appelations': u'10316',
-    #         #         'boutonValider': u'',
-    #         #         'boutonValider:hiddenelementSubmit': u'boutonValider:hiddenelementSubmit',
-    #         #         't:formdata': 'H4sIAAAAAAAAAO1VP0sDMRxNCy62FXFwcxA6KEjO2graKqUO1qGoeOieu+baK7kkJrm2Lk76Afwc/gF1L+LY7+KiroJJD21HW6UgNHDkd7/Ly3tvePe7eQFTrQLYFNitY6Ef5nkCSws1EXUxtmxMsKt8RkucY0KQKfOoX0spwAYTNYg40mioEMdSibN16DKBie/oPeCMYqokPEJVn5UFC3naxirkV6udlceZt+c4iFVAwmVUCUb2UYAVmKs0tASLIFqzbCV8Wiu0BZg1TWia8MBpaGGgv9pcgeSgst/ayo1gK9Ntd7sP9kcnrgWdgnMQb2VBZigVhDGu2eFP2Sv6fHrtlXvL5fnr4ph5s09LF3vZ91swZt7c3/g1yOmRkckJ54TzX3KWQHEopMNCpX+KX58oFjqxu56AHMPANekMQvodW+jXg8HE7vTQdugEvkofCuZiKXtvUurLji/v77YTiwvRENAUgQaZIWCkxqJw63kQSbAHJLS2QH4EF01E/Ko2YC5OKZCKuidR9xMIE1r2DwcAAA==',
-    #         #     }
-    #         # }
     #         {
-    #             'url': 'https://candidat.pole-emploi.fr/offres/recherche?lieux=44109&motsCles=embarqu%C3%A9&offresPartenaires=true&rayon=50&tri=0' #,
-    #             #'datas': {
-    #             #    'appelations': u'10316',
-    #             #    'boutonValider': u'',
-    #             #    'boutonValider:hiddenelementSubmit': u'boutonValider:hiddenelementSubmit',
-    #             #    't:formdata': 'H4sIAAAAAAAAAO1VP0sDMRxNCy62FXFwcxA6KEjO2graKqUO1qGoeOieu+baK7kkJrm2Lk76Afwc/gF1L+LY7+KiroJJD21HW6UgNHDkd7/Ly3tvePe7eQFTrQLYFNitY6Ef5nkCSws1EXUxtmxMsKt8RkucY0KQKfOoX0spwAYTNYg40mioEMdSibN16DKBie/oPeCMYqokPEJVn5UFC3naxirkV6udlceZt+c4iFVAwmVUCUb2UYAVmKs0tASLIFqzbCV8Wiu0BZg1TWia8MBpaGGgv9pcgeSgst/ayo1gK9Ntd7sP9kcnrgWdgnMQb2VBZigVhDGu2eFP2Sv6fHrtlXvL5fnr4ph5s09LF3vZ91swZt7c3/g1yOmRkckJ54TzX3KWQHEopMNCpX+KX58oFjqxu56AHMPANekMQvodW+jXg8HE7vTQdugEvkofCuZiKXtvUurLji/v77YTiwvRENAUgQaZIWCkxqJw63kQSbAHJLS2QH4EF01E/Ko2YC5OKZCKuidR9xMIE1r2DwcAAA==',
-    #             #}
+    #             # Mot clé: Embarqué
+    #             # Lieu: Nantes (50km)
+    #             'url': 'https://candidat.pole-emploi.fr/offres/recherche?lieux=44109&motsCles=embarqu%C3%A9&offresPartenaires=true&rayon=50&tri=0'
+    #         },
+    #         {
+    #             # Mot clé: Embedded
+    #             # Lieu: Rennes (50km)
+    #             'url': 'https://candidat.pole-emploi.fr/offres/recherche?motsCles=Embarqu%C3%A9&offresPartenaires=true&range=0-9&rayon=50&tri=0'
     #         }
-    #         # {
-    #         #     'url': 'http://candidat.pole-emploi.fr/candidat/rechercheoffres/avancee.recherche',
-    #         #     'datas': {
-    #         #         'appelations': u'18258',
-    #         #         'boutonValider': u'',
-    #         #         'boutonValider:hiddenelementSubmit': u'boutonValider:hiddenelementSubmit',
-    #         #         't:formdata': 'H4sIAAAAAAAAAO1VP0sDMRxNCy62FXFwcxA6KEjO2graKqUO1qGoeOieu+baK7kkJrm2Lk76Afwc/gF1L+LY7+KiroJJD21HW6UgNHDkd7/Ly3tvePe7eQFTrQLYFNitY6Ef5nkCSws1EXUxtmxMsKt8RkucY0KQKfOoX0spwAYTNYg40mioEMdSibN16DKBie/oPeCMYqokPEJVn5UFC3naxirkV6udlceZt+c4iFVAwmVUCUb2UYAVmKs0tASLIFqzbCV8Wiu0BZg1TWia8MBpaGGgv9pcgeSgst/ayo1gK9Ntd7sP9kcnrgWdgnMQb2VBZigVhDGu2eFP2Sv6fHrtlXvL5fnr4ph5s09LF3vZ91swZt7c3/g1yOmRkckJ54TzX3KWQHEopMNCpX+KX58oFjqxu56AHMPANekMQvodW+jXg8HE7vTQdugEvkofCuZiKXtvUurLji/v77YTiwvRENAUgQaZIWCkxqJw63kQSbAHJLS2QH4EF01E/Ko2YC5OKZCKuidR9xMIE1r2DwcAAA==',
-    #         #     }
-    #         # }
-
     #     ]
-    # }#,
+    # },
     # How to add a custom feed?
-    # 1. Go to <http://cadres.apec.fr/MonCompte/Flux-RSS/abonnements-flux-rss.jsp>;
+    # 1. Go to https://cadres.apec.fr/home/mon-compte/abonnements-flux-rss.html
     # 2. Fill the form;
     # 3. Find and click the RSS icon next to "Voici le flux RSS généré correspondant à vos critères;"
     # 4. Copy the url and add it below: "{'url': 'PASTE HERE'},";
     # 5. Swear & curse Apec.fr for not providing more custom feeds.
-    #'Apec': {
+    # 'Apec': {
     #    'feeds': [
-            # APEC, Informatique, Ile-de-France
-    #        { 'url': 'http://www.apec.fr/fluxRss/XML/OffresCadre_F101833_R711.xml'},
-            # APEC, R&D (conception, recherche), Ile-de-France
-            #{ 'url': 'http://www.apec.fr/fluxRss/XML/OffresCadre_F101796_R711.xml'},
-    #    ]
-    #},
+    #         {
+    #             # APEC, Informatique industrielle, Bretagne
+    #             'url': 'https://www.apec.fr/fluxRss/XML/OffresCadre_F101810_R705.xml'
+    #         }
+    #     ]
+    # },
     # How to add a custom feed?
-    # 1. Go to <http://www.cadresonline.com/recherche-emploi>;
+    # 1. Go to https://www.cadresonline.com/recherche-emploi
     # 2. Fill the form;
     # 3. Click "Lancer la recherche" (Search);
     # 4. Find & click the RSS logo (on the right-hand side of "x offres correspondent à votre recherche d'emploi;"
     # 5. Copy the url and add it below: "{'url': 'PASTE HERE'},".
-    #'cadresonline': {
+    # 'Cadresonline': {
     #    'feeds': [
-    #        #{ 'url': 'http://www.cadresonline.com/resultat-emploi/feed.rss?flux=1&kw=developpeur&kt=1&jc=5t.0.1.2.3.4.5.6.7-10t.0.1.2.3.4.5.6.7.8&ct=0&dt=1374746615' },
+    #         {
+    #             # Ingénieur en Pays de Loire
+    #             'url': 'https://www.cadresonline.com/resultat-emploi/feed.rss?flux=1&kw=Ing%C3%A9nieur&kt=1&sr=17t.0.1.2.3.4&jc=5t.0.1.2.3.4.5.6.7&dt=1534706430'
+    #         },
     #    ]
-    #},
+    # },
     # How to add a custom feed?
     # 1. Select your region                             {REGION_CODE}
     #   See ./help/regionjobs-region-codes.txt
@@ -77,29 +67,20 @@ configs = {
     # 3. Craft your feed url {URL} =
     #   http://www.{REGION_CODE}/fr/rss/flux.aspx?&fonction={SECTOR_CODE}
     # 4. Add the line {'url': '{URL}'},
-    #'RegionJob': {
+    # 'RegionJob': {
     #    'feeds': [
-    #        {'url': 'http://www.parisjob.com/fr/rss/flux.aspx?&fonction=7'},
-    #        {'url': 'http://www.parisjob.com/fr/rss/flux.aspx?&fonction=9'},
-    #        {'url': 'http://www.parisjob.com/fr/rss/flux.aspx?&fonction=10'},
+    #         {
+    #             # Nantes, Embarqué, CDI
+    #             'url': 'https://www.ouestjob.com/emplois/recherche.html?l=Nantes+44000&l_autocomplete=http%3A%2F%2Fwww.rj.com%2Fcommun%2Flocalite%2Fcommune%2F44109&f=Informatique_dev&c=CDI&k=embarqu%C3%A9&q=Ingenieur_B5'
+    #         }
     #    ]
-    #},
-    # How to add a custom feed?
-    # 1. Select your country                            {COUNTRY_CODE}
-    #   See ./help/eures-contry-codes.txt
-    # 2. Select your region                             {REGION_CODE}
-    #   See ./help/eures-region-codes.txt
-    # 3. Select your job sector                         {SECTOR_CODE}
-    #   See ./help/eures-sector-codes.txt
-    # 4. Craft your feed url {URL} =
-    #   https://ec.europa.eu/eures/eures-searchengine/servlet/BrowseCountryJVsServlet?country={COUNTRY_CODE}&multipleRegions={REGION_CODE}&isco={SECTOR_CODE}&lg=FR&date=01%2F01%2F1975&title=&durex=&exp=&serviceUri=browse&qual=&pageSize=99&page=1&totalCount=1
-    # 5. Add the line {'url': '{URL}'},
-    #'Eures': {
-    #    'feeds': [
-    #        # France (FR), Ile-de-France (R21), Concepteurs et analystes de systèmes informatiques (2131)
-    #        # { 'url': 'https://ec.europa.eu/eures/eures-searchengine/servlet/BrowseCountryJVsServlet?country=FR&multipleRegions=R21&isco=2131&lg=FR&date=01%2F01%2F1975&title=&durex=&exp=&serviceUri=browse&qual=&pageSize=99&page=1&totalCount=1'},
-    #        # Allemagne (DE), Berlin (R1B), Pompiers (5161)
-    #        # { 'url': 'https://ec.europa.eu/eures/eures-searchengine/servlet/BrowseCountryJVsServlet?country=DE&multipleRegions=R1B&isco=5161&lg=FR&date=01%2F01%2F1975&title=&durex=&exp=&serviceUri=browse&qual=&pageSize=99&page=1&totalCount=1'},
-    #    ]
-    #}
+    # },
+    'Septlieues': {
+       'feeds': [
+            {
+                # Toute la France, logiciel embarqué
+                'url': 'http://www.sept-lieues.com/Jobs/Search?EmbeddedSoftwareGroup=true'
+            }
+       ]
+    },
 }
